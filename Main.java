@@ -14,6 +14,10 @@ public class Main extends JFrame {
 		setVisible(true);
 	}
 
+	public static int rollDice() {
+		return ThreadLocalRandom.current().nextInt(1, 5 + 1);
+	}
+
 	public void paint(Graphics g) {
 		Point a = new Point(250, 250);
 		Point b = new Point(400, 100);
@@ -36,12 +40,21 @@ public class Main extends JFrame {
 		 */
 		for (int i=0; i < 1000; i++) {
 			g.drawLine(tracer.x, tracer.y, tracer.x, tracer.y);
-			tracer.randomize();
+			int roll = rollDice();
+			if (roll==1 || roll==2) {
+				setPoint(tracer, a);
+			}
+			else if (roll==3 || roll==4) {
+				setPoint(tracer, b);
+			}
+			else if (roll==5 || roll==6) {
+				setPoint(tracer, c);
+			}
 		}
 	}
 
-	private void setPoint() {
-
+	private void setPoint(Point start, Point target) {
+		start.move(target);
 	}
 
 	public static void main(String[] args) {
@@ -57,6 +70,14 @@ class Point {
 		this.x = x;
 		this.y = y;
 	}
+
+	public void move(Point target) {
+		int midX = (this.x + target.x) / 2;
+		int midY = (this.y + target.y) / 2;
+		this.x = midX;
+		this.y = midY;
+	}
+
 	public void randomize() {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
